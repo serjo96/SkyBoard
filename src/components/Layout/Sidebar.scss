@@ -1,0 +1,152 @@
+@use '../../styles/mixins' as *;
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100vh;
+  background: rgba(20, 20, 20, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  padding: 20px 20px 20px 88px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  color: white;
+
+  // Специальные стили для навигационного сайдбара
+  &--navigation {
+    z-index: 102; // Поднимаем над остальными сайдбарами
+    padding: 20px; // Убираем отступ для панели управления
+    
+    &.is-open {
+      transform: translateX(68px); // Сдвигаем на ширину controls-bar
+    }
+  }
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  &__close-button {
+    @include control-button;
+  }
+
+  // Навигация
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+
+      .material-icons {
+        font-size: 20px;
+        opacity: 0.8;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+
+        .material-icons {
+          opacity: 1;
+        }
+      }
+
+      &.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+
+        .material-icons {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // Контент
+  &__content {
+    height: 100%;
+    overflow-y: auto;
+
+    h2 {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+  }
+}
+
+// Панель с кнопками управления
+.controls-bar {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(20, 20, 20, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 0 12px 12px 0;
+  z-index: 101;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  width: 68px;
+
+  &__button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    .material-icons {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(2px);
+    }
+
+    &.is-active {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transform: translateX(4px);
+
+      .material-icons {
+        transform: rotate(180deg);
+      }
+    }
+  }
+} 

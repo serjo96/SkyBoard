@@ -1,0 +1,29 @@
+@use '../../styles/mixins' as *;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &-content {
+    flex: 1;
+    display: flex;
+    position: relative;
+  }
+
+  &__main {
+    flex: 1;
+    padding: 20px;
+    margin-left: 68px; // Отступ для панели управления
+    width: calc(100% - 68px); // Учитываем ширину панели управления
+    min-height: calc(100vh - 60px); // Вычитаем высоту header
+  }
+
+  &__nav-button {
+    @include control-button;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+  }
+} 

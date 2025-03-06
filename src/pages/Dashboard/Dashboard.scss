@@ -1,0 +1,85 @@
+@use '../../styles/mixins' as *;
+
+.dashboard {
+  position: relative;
+  height: 100vh;
+  color: white;
+  overflow: hidden;
+
+  // Панель с кнопками управления
+  &__controls-bar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 0 12px 12px 0;
+    z-index: 101;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    width: 68px;
+  }
+
+  &__control-button {
+    @include control-button;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+
+    .material-icons {
+      font-size: 24px;
+    }
+
+    &.is-active {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(4px);
+
+      .material-icons {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  // Сайдбар
+  &__sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    padding: 20px 20px 20px 88px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  &__visualization {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 85vh;
+    padding-bottom: 15vh;
+    z-index: 1;
+  }
+
+  // Контент сайдбара
+  &__sidebar-content {
+    h2 {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+  }
+} 

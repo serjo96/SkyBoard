@@ -1,0 +1,26 @@
+.tree-view {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+
+  svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .react-transform-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .react-transform-component {
+    width: 100% !important;
+    height: 100% !important;
+  }
+} 
