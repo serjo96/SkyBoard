@@ -3,31 +3,31 @@ import { Group } from '@visx/group';
 import { Circle } from '@visx/shape';
 import { Text } from '@visx/text';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { CategoryNode } from '@/types/visualization.types';
+import { CategoryNode as CategoryNodeType } from '@/types/visualization.types';
 import { useVisualization } from '@/hooks/useVisualization';
 
-interface CategoryNode {
+interface CategoryNodeProps {
   id: number;
   x: number;
   y: number;
   count: number;
   category: string;
-  subcategories?: CategoryNode[];
+  subcategories?: CategoryNodeProps[];
 }
 
 interface CategoryGraphProps {
-  initialData: CategoryNode[];
-  currentData: CategoryNode[] | null;
+  initialData: CategoryNodeType[];
+  currentData: CategoryNodeType[] | null;
   width?: number;
   height?: number;
   onResetZoom?: (resetTransform: () => void) => void;
-  onCategoryClick: (category: CategoryNode) => void;
+  onCategoryClick: (category: CategoryNodeType) => void;
 }
 
 const SubCategories: React.FC<{ 
-  node: CategoryNode; 
+  node: CategoryNodeProps; 
   parentRadius: number;
-  onSubCategoryClick: (category: CategoryNode) => void;
+  onSubCategoryClick: (category: CategoryNodeProps) => void;
 }> = ({ node, parentRadius, onSubCategoryClick }) => {
   if (!node.subcategories?.length) return null;
 
@@ -35,9 +35,9 @@ const SubCategories: React.FC<{
   const subRadius = parentRadius * 0.3;
   
   const positions = [
-    { x: 0, y: -subRadius }, // верхний круг
-    { x: -subRadius, y: subRadius }, // нижний левый
-    { x: subRadius, y: subRadius }, // нижний правый
+    { x: 0, y: -subRadius }, // top circle
+    { x: -subRadius, y: subRadius }, // bottom left
+    { x: subRadius, y: subRadius }, // bottom right
   ];
 
   return (
@@ -47,7 +47,7 @@ const SubCategories: React.FC<{
           key={subCategory.id}
           transform={`translate(${positions[index].x}, ${positions[index].y})`}
           onClick={(e) => {
-            e.stopPropagation(); // Предотвращаем всплытие события
+            e.stopPropagation();
             onSubCategoryClick(subCategory);
           }}
           style={{ cursor: 'pointer' }}
@@ -86,8 +86,8 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({
   const data = prepareData(propCurrentData || initialData);
   const radiusScale = scaleRadius(data);
 
-  // Вычисляем границы для центрирования
-  const padding = 100; // отступ от краев
+
+  const padding = 100; 
   const bounds = React.useMemo(() => {
     let minX = Infinity, maxX = -Infinity;
     let minY = Infinity, maxY = -Infinity;
@@ -108,7 +108,7 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({
     };
   }, [data, radiusScale]);
 
-  // Создаем стабильную функцию для установки resetTransform
+
   const handleResetTransform = React.useCallback((resetTransform: () => void) => {
     onResetZoom?.(resetTransform);
   }, [onResetZoom]);
@@ -122,12 +122,11 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({
         centerOnInit={true}
         wheel={{ disabled: false }}
         limitToBounds={true}
-        boundaryRatio={0.6}
         initialPositionX={(width - bounds.width) / 2 - bounds.x}
         initialPositionY={(height - bounds.height) / 2 - bounds.y}
       >
-        {({ zoomIn, zoomOut, resetTransform }) => {
-          // Вызываем handleResetTransform один раз при монтировании
+        {({ resetTransform }) => {
+        
           React.useEffect(() => {
             handleResetTransform(resetTransform);
           }, []);
@@ -149,7 +148,7 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({
                 height={height}
                 style={{ 
                   background: '#111',
-                  overflow: 'hidden', // меняем на hidden
+                  overflow: 'hidden',
                   display: 'block'
                 }}
                 viewBox={`${bounds.x} ${bounds.y} ${bounds.width} ${bounds.height}`}

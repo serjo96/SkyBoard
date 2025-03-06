@@ -15,13 +15,13 @@
   transform: translateX(-100%);
   color: white;
 
-  // Специальные стили для навигационного сайдбара
+  // Special styles for navigation sidebar
   &--navigation {
-    z-index: 102; // Поднимаем над остальными сайдбарами
-    padding: 20px; // Убираем отступ для панели управления
+    z-index: 102; // Place above other sidebars
+    padding: 20px; // Remove control panel padding
     
     &.is-open {
-      transform: translateX(68px); // Сдвигаем на ширину controls-bar
+      transform: translateX(68px); // Shift by controls-bar width
     }
   }
 
@@ -45,7 +45,7 @@
     @include control-button;
   }
 
-  // Навигация
+  // Navigation
   &__nav {
     display: flex;
     flex-direction: column;
@@ -86,7 +86,7 @@
     }
   }
 
-  // Контент
+  // Content
   &__content {
     height: 100%;
     overflow-y: auto;
@@ -99,7 +99,7 @@
   }
 }
 
-// Панель с кнопками управления
+// Control buttons panel
 .controls-bar {
   position: fixed;
   left: 0;

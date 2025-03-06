@@ -10,13 +10,13 @@ interface CategoriesState {
 const initialState: CategoriesState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 const categoriesSlice = createSlice({
   name: 'categories',
   initialState,
-  reducers: {}
+  reducers: {},
 });
 
-export default categoriesSlice.reducer; 
+export default categoriesSlice.reducer;

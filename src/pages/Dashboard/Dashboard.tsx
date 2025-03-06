@@ -5,17 +5,25 @@ import VisualizationControls from './components/VisualizationControls';
 import Breadcrumbs from './components/Breadcrumbs';
 import './Dashboard.scss';
 import DashboardAnalytics from './components/DashboardAnalytics';
-import { CategoryNode } from '@/types/category';
 import { useVisualization } from '@/hooks/useVisualization';
 import TreeView from '@/components/Visualization/TreeView/TreeView';
 
 type VisualizationType = 'graph' | 'tree';
 
+const addCoordinates = (node: any): any => ({
+  ...node,
+  x: 0,
+  y: 0,
+  subcategories: node.subcategories?.map(addCoordinates),
+});
+
+const preparedMockData = mockCategoryData.map(addCoordinates);
+
 const Dashboard: React.FC = () => {
   const [resetZoomFn, setResetZoomFn] = useState<(() => void) | null>(null);
   const [visualizationType, setVisualizationType] = useState<VisualizationType>('graph');
-  
-  const { 
+
+  const {
     currentData,
     categoryPath,
     originalData,
@@ -23,12 +31,11 @@ const Dashboard: React.FC = () => {
     resetZoom,
     initializeData,
     findCategoryById,
-    handleCategoryClick
+    handleCategoryClick,
   } = useVisualization(window.innerWidth, window.innerHeight);
 
-  // 🔄 Инициализация данных при монтировании
   React.useEffect(() => {
-    initializeData(mockCategoryData);
+    initializeData(preparedMockData);
   }, [initializeData]);
 
   const handleResetZoom = useCallback(() => {
@@ -40,39 +47,41 @@ const Dashboard: React.FC = () => {
     setResetZoomFn(() => resetFn);
   }, []);
 
-  const handleNavigate = useCallback((categoryId: number | null) => {
-    navigateToCategory(categoryId);
-  }, [navigateToCategory]);
+  const handleNavigate = useCallback(
+    (categoryId: number | null) => {
+      navigateToCategory(categoryId);
+    },
+    [navigateToCategory]
+  );
 
   const handleViewChange = useCallback((type: VisualizationType) => {
     setVisualizationType(type);
   }, []);
 
-  // Оставляем только один эффект для отслеживания изменений данных
   React.useEffect(() => {
-    console.log('📱 Dashboard state updated:', { 
-      categoryPath, 
-      currentDataLength: currentData?.length 
+    console.log('📱 Dashboard state updated:', {
+      categoryPath,
+      currentDataLength: currentData?.length,
     });
   }, [categoryPath, currentData]);
 
   return (
     <div className="dashboard">
-      <Breadcrumbs 
+      <Breadcrumbs
         categoryPath={categoryPath}
         originalData={originalData}
         findCategoryById={findCategoryById}
         onNavigate={handleNavigate}
       />
-      <VisualizationControls 
+      <VisualizationControls
         onViewChange={handleViewChange}
         onResetZoom={handleResetZoom}
         currentView={visualizationType}
       />
       <div className="dashboard__visualization">
         {visualizationType === 'graph' ? (
-          <CategoryGraph 
-            initialData={mockCategoryData}
+          <CategoryGraph
+            initialData={preparedMockData}
             currentData={currentData}
             width={window.innerWidth}
             height={window.innerHeight}
@@ -81,11 +90,10 @@ const Dashboard: React.FC = () => {
           />
         ) : (
           <TreeView
-            data={currentData || mockCategoryData}
+            data={currentData || preparedMockData}
             width={window.innerWidth}
             height={window.innerHeight}
             onCategoryClick={handleCategoryClick}
-            onResetZoom={handleSetResetZoom}
           />
         )}
       </div>
@@ -94,4 +102,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

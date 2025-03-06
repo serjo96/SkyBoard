@@ -13,10 +13,8 @@
 
   &__main {
     flex: 1;
-    padding: 20px;
-    margin-left: 68px; // Отступ для панели управления
-    width: calc(100% - 68px); // Учитываем ширину панели управления
-    min-height: calc(100vh - 60px); // Вычитаем высоту header
+    width: calc(100% - 68px);
+    min-height: calc(100vh - 60px);
   }
 
   &__nav-button {
@@ -26,4 +24,4 @@
     left: 20px;
     z-index: 100;
   }
-} 
+}

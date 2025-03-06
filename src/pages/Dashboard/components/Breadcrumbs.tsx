@@ -11,7 +11,6 @@ interface BreadcrumbsProps {
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ 
   categoryPath,
-  originalData,
   findCategoryById,
   onNavigate 
 }) => {

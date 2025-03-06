@@ -3,13 +3,14 @@ import { Group } from '@visx/group';
 import { Tree, hierarchy } from '@visx/hierarchy';
 import { LinkHorizontal } from '@visx/shape';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { BaseCategoryNode } from '@/types/visualization.types';
+import { CategoryNode } from '@/types/visualization.types';
+import './TreeView.scss';
 
 interface TreeViewProps {
-  data: BaseCategoryNode[];
+  data: CategoryNode[];
   width: number;
   height: number;
-  onCategoryClick: (category: BaseCategoryNode) => void;
+  onCategoryClick: (category: CategoryNode) => void;
   onResetZoom?: (resetTransform: () => void) => void;
 }
 
@@ -23,27 +24,32 @@ const TreeView: React.FC<TreeViewProps> = ({
   const margin = { top: 20, left: 40, right: 40, bottom: 20 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
-
-  // Преобразуем плоские данные в иерархическую структуру
+  console.log(data);
+  // Transform flat data into hierarchical structure
   const root = React.useMemo(() => {
-    // Создаем корневой узел с переданными данными как подкатегориями
-    const rootNode: BaseCategoryNode = {
+    // Create root node with passed data as subcategories
+    const rootNode: CategoryNode = {
       id: 0,
       category: 'Root',
       count: 0,
-      subcategories: data
+      subcategories: data,
+      x: 0,
+      y: 0,
     };
-    
-    // Создаем иерархию для D3
-    const hierarchyData = hierarchy(rootNode, node => node.subcategories);
-    
+
+    // Create D3 hierarchy
+    const hierarchyData = hierarchy(rootNode, (node) => node.subcategories);
+
     return hierarchyData;
   }, [data]);
 
-  // Создаем стабильную функцию для установки resetTransform
-  const handleResetTransform = React.useCallback((resetTransform: () => void) => {
-    onResetZoom?.(resetTransform);
-  }, [onResetZoom]);
+  // Create stable function for setting resetTransform
+  const handleResetTransform = React.useCallback(
+    (resetTransform: () => void) => {
+      onResetZoom?.(resetTransform);
+    },
+    [onResetZoom]
+  );
 
   return (
     <div className="tree-view">
@@ -55,8 +61,7 @@ const TreeView: React.FC<TreeViewProps> = ({
         wheel={{ disabled: false }}
         limitToBounds={true}
       >
-        {({ zoomIn, zoomOut, resetTransform }) => {
-          // Вызываем handleResetTransform один раз при монтировании
+        {({ resetTransform }) => {
           React.useEffect(() => {
             handleResetTransform(resetTransform);
           }, []);
@@ -64,9 +69,9 @@ const TreeView: React.FC<TreeViewProps> = ({
           return (
             <TransformComponent
               wrapperStyle={{
-                width: "100%",
-                height: "100%",
-                overflow: "hidden"
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
               }}
             >
               <svg width={width} height={height}>
@@ -77,9 +82,8 @@ const TreeView: React.FC<TreeViewProps> = ({
                     size={[innerHeight, innerWidth]}
                     separation={(a, b) => (a.parent === b.parent ? 1 : 2) / a.depth}
                   >
-                    {tree => (
+                    {(tree) => (
                       <Group>
-                        {/* Рисуем линии между узлами */}
                         {tree.links().map((link, i) => (
                           <LinkHorizontal
                             key={i}
@@ -89,24 +93,20 @@ const TreeView: React.FC<TreeViewProps> = ({
                             strokeWidth={1}
                           />
                         ))}
-                        {/* Рисуем узлы */}
                         {tree.descendants().map((node, i) => (
                           <Group
                             key={i}
                             top={node.x}
                             left={node.y}
                             onClick={() => {
-                              if (node.data.id !== 0) { // Игнорируем клик на корневом узле
+                              if (node.data.id !== 0) {
                                 onCategoryClick(node.data);
                               }
                             }}
                             style={{ cursor: node.data.id !== 0 ? 'pointer' : 'default' }}
                           >
-                            <circle
-                              r={node.data.id === 0 ? 0 : 20} // Скрываем круг для корневого узла
-                              fill="rgba(255,255,255,0.5)"
-                            />
-                            {node.data.id !== 0 && ( // Не показываем текст для корневого узла
+                            <circle r={node.data.id === 0 ? 0 : 20} fill="rgba(255,255,255,0.5)" />
+                            {node.data.id !== 0 && (
                               <text
                                 dy=".33em"
                                 fontSize={9}
@@ -133,4 +133,4 @@ const TreeView: React.FC<TreeViewProps> = ({
   );
 };
 
-export default TreeView; 
+export default TreeView;

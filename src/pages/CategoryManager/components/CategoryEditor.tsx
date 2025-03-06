@@ -6,7 +6,7 @@ interface CategoryEditorProps {
   onSave: (data: any) => void;
 }
 
-const CategoryEditor: React.FC<CategoryEditorProps> = ({ categoryId, onSave }) => {
+const CategoryEditor: React.FC<CategoryEditorProps> = ({ onSave }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#000000');
   const { categories } = useCategories();

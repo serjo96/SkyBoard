@@ -3,10 +3,9 @@
 .dashboard {
   position: relative;
   height: 100vh;
-  color: white;
+  width: 100%;
   overflow: hidden;
 
-  // Панель с кнопками управления
   &__controls-bar {
     position: fixed;
     left: 0;
@@ -44,7 +43,6 @@
     }
   }
 
-  // Сайдбар
   &__sidebar {
     position: fixed;
     top: 0;
@@ -69,12 +67,11 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 85vh;
-    padding-bottom: 15vh;
+    height: 100%;
     z-index: 1;
+    padding-bottom: 15vh;
   }
 
-  // Контент сайдбара
   &__sidebar-content {
     h2 {
       margin-bottom: 2rem;
@@ -82,4 +79,4 @@
       color: #fff;
     }
   }
-} 
+}

@@ -10,13 +10,13 @@ interface TasksState {
 const initialState: TasksState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {}
+  reducers: {},
 });
 
-export default tasksSlice.reducer; 
+export default tasksSlice.reducer;

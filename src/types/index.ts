@@ -13,4 +13,4 @@ export interface Category {
   name: string;
   parentId: string | null;
   color: string;
-} 
+}

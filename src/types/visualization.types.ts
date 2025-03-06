@@ -10,4 +10,4 @@ export interface CategoryNode {
 export interface VisualizationConfig {
   width: number;
   height: number;
-} 
+}

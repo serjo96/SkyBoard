@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-//import '@/styles/pages/TaskDetails/TaskDetails.scss';
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams();

@@ -4,11 +4,11 @@ export const ROUTES = {
     LIST: '/tasks',
     DETAILS: '/tasks/:id',
     CREATE: '/tasks/create',
-    EDIT: '/tasks/:id/edit'
+    EDIT: '/tasks/:id/edit',
   },
   CATEGORIES: {
     LIST: '/categories',
     CREATE: '/categories/create',
-    EDIT: '/categories/:id'
-  }
-} as const; 
+    EDIT: '/categories/:id',
+  },
+} as const;

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useCategories } from '@/hooks/useCategories';
-//import '@/styles/components/TaskForm/TaskForm.scss';
 
 interface TaskFormProps {
   onSubmit: (data: any) => void;

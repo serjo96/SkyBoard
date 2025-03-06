@@ -1,5 +1,4 @@
 import React from 'react';
-//import '@/styles/pages/CategoryManager/CategoryManager.scss';
 
 const CategoryManager: React.FC = () => {
   return (

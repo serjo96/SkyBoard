@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Task } from '@/types';
-//import '@/styles/components/TaskCard/TaskCard.scss';
 
 interface TaskCardProps {
   task: Task;
